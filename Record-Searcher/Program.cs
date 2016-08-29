@@ -38,8 +38,8 @@ namespace Record_Searcher
                     }
                 }
             }
-
-            Application.Run(new Form2(MetroAllowed()));
+            Application.Run(new MetroStyleRegForm());
+           // Application.Run(new Form2(MetroAllowed()));
             return 0;
         }
 
