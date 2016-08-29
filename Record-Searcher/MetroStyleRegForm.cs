@@ -19,7 +19,7 @@ namespace Record_Searcher
         public MetroStyleRegForm()
         {
             InitializeComponent();
-            Set_ListView();
+         //   Set_ListView();
 
             SearchBox.Focus();
 
@@ -28,32 +28,41 @@ namespace Record_Searcher
         }
         private void Set_ListView()
         {
-            listView1.View = View.Details;
-            listView1.GridLines = true;
-            listView1.FullRowSelect = true;
-            listView1.Columns.Add("Type", 50, HorizontalAlignment.Left);
-            listView1.Columns.Add("Date", 100, HorizontalAlignment.Left);
-            listView1.Columns.Add("Title", 100, HorizontalAlignment.Left);
-            listView1.Columns.Add("Tag", 50, HorizontalAlignment.Left);
-            listView1.Columns.Add("Person", 100, HorizontalAlignment.Left);
-            listView1.Columns.Add("Pages", 200, HorizontalAlignment.Left);
+            ListView1.View = View.Details;
+            ListView1.GridLines = true;
+            ListView1.FullRowSelect = true;
+            ListView1.Columns.Add("Type", 50, HorizontalAlignment.Left);
+            ListView1.Columns.Add("Date", 100, HorizontalAlignment.Left);
+            ListView1.Columns.Add("Title", 100, HorizontalAlignment.Left);
+            ListView1.Columns.Add("Tag", 50, HorizontalAlignment.Left);
+            ListView1.Columns.Add("Person", 100, HorizontalAlignment.Left);
+            ListView1.Columns.Add("Pages", 1000, HorizontalAlignment.Left);
 
-            this.listView1.Sorting = SortOrder.Ascending;
+            this.ListView1.Sorting = SortOrder.Ascending;
 
         }
         private void Search_Click(object sender, EventArgs e)
         {
+            ListView1.Clear();
             Utility util = new Utility();
             if (SearchBox.Text != "")
             {
                 Search search = new Search();
                 string SearchFor = SearchBox.Text;
+                Set_ListView();
                 foreach (List<Records> records in AllTypes)
                 {
                     CurrentRecords = records;
                     foreach (Records rec in search.FindPerson(SearchFor, CurrentRecords))
                     {
                         Set_Display(rec, util.PagesToDisplay(rec.Pages));
+
+                    }
+                    foreach(ColumnHeader head in ListView1.Columns)
+                    {
+                      //  head.AutoResize(ColumnHeaderAutoResizeStyle.None);
+                      //  head.Width = 150;
+                        head.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
 
                     }
                 }
@@ -72,17 +81,22 @@ namespace Record_Searcher
                 CorrectPages
                
             });
-            listView1.Items.Add(ToBeDisplayed);
+            ListView1.Items.Add(ToBeDisplayed);
+            
+         
         }
         private async Task LoadForm()
         {
             Btn1.Enabled = false;
             progressBar1.Show();
-            listView1.Enabled = false;
-
+            ListView1.Enabled = false;
+           // int CountProgress;
             type = new Type("Deed", Program.DirectoryPath);
             Utility util = new Utility();
-            string[] types = Type.NumberOfValidTypes();
+            string[] types = Type.NumberOfValidTypes();  
+            progressBar1.Value = 4;
+            Cursor.Current = Cursors.WaitCursor;
+            this.UseWaitCursor = true;
             for (int i = 1; i < types.Count() + 1; i++)
             {
                 Reader Formatter = new Reader(util.FindFiles(type.GeneratePathsForTypes(types[i - 1])), Utility.GetTitle());
@@ -91,18 +105,29 @@ namespace Record_Searcher
                 RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1], Program.DirectoryPath));
 
                 AllTypes.Add(RunThroughTypeList);
+               // CountProgress =  (i - 1) * (100 / types.Count());
                 progressBar1.Value = i * (100 / types.Count());
+               
             }
-
+            this.UseWaitCursor = false;
+            Cursor.Current = Cursors.Default;
             progressBar1.Hide();
 
-            listView1.Enabled = true;
+            ListView1.Enabled = true;
             Btn1.Enabled = true;
         }
 
-        private void MetroStyleRegForm_Load(object sender, EventArgs e)
+        private async void MetroStyleRegForm_Load(object sender, EventArgs e)
         {
-            LoadForm();
+            
+          await LoadForm();
+        }
+
+        private async void metroTile1_Click(object sender, EventArgs e)
+        {
+            ListView1.Clear();
+            await LoadForm();
+        }
+      
         }
     }
-}

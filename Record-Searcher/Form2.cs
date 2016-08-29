@@ -29,7 +29,7 @@ namespace Record_Searcher
 
         private void Regular_SearchClick(object sender, EventArgs e)
         {
-            if(NewForm)
+            if(!NewForm)
             {
                 ThisForm.Hide();
                 OldStyleBasicForm form = new OldStyleBasicForm();
@@ -38,8 +38,11 @@ namespace Record_Searcher
             }
             else
             {
-
-                return;
+                ThisForm.Hide();
+                MetroStyleRegForm form = new MetroStyleRegForm();
+                form.Closed += (s, args) => this.Close();
+                form.Show();
+                
             }
         }
     }
