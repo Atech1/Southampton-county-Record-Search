@@ -1,0 +1,21 @@
+﻿\/\/\/\/\/UI Features to add:\/\/\/\/\/
+
+-ToolTip for features. //done
+
+-change to a listbox or a data gird view so that a user can click on a record displayed to highlight.
+
+-maybe add a double click feature to have a message box popup come up with all the info. --> zoom in.
+
+-loading bar... 
+
+
+\/\/\/\/\/\/\/Data Features to Implement:\/\/\/\/\/\/\/\/\/\
+
+-a Custom Search algorithm.
+
+-Record's have a value linking to their book number rather than just the book title. //completed
+
+-an error class to clearly call errors, and log all errors on close 
+
+-would i want to organize the info better by having a list of books in the records... books made of title, type, and book number (?)
+-in that way i should have a person too, made of first and last name and tag (?)
