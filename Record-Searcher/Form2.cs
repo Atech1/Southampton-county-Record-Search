@@ -24,7 +24,10 @@ namespace Record_Searcher
 
         private void Advanced_SearchClick(object sender, EventArgs e)
         {
-            return;
+            ThisForm.Hide();
+            AdvancedForm form = new AdvancedForm();
+            form.Closed += (s, args) => this.Close();
+            form.Show();
         }
 
         private void Regular_SearchClick(object sender, EventArgs e)
