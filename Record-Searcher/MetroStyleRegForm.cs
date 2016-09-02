@@ -47,24 +47,24 @@ namespace Record_Searcher
             Utility util = new Utility();
             if (SearchBox.Text != "")
             {
-                Search search = new Search();
+              
                 string SearchFor = SearchBox.Text;
                 Set_ListView();
                 foreach (List<Records> records in AllTypes)
                 {
                     CurrentRecords = records;
-                    foreach (Records rec in search.FindPerson(SearchFor, CurrentRecords))
+                    Search search = new Search(SearchFor, CurrentRecords);
+                    foreach (Records rec in search.FindPerson())
                     {
                         Set_Display(rec, util.PagesToDisplay(rec.Pages));
 
                     }
-                    foreach(ColumnHeader head in ListView1.Columns)
-                    {
-                      //  head.AutoResize(ColumnHeaderAutoResizeStyle.None);
-                      //  head.Width = 150;
-                        head.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                   
+                }
+                foreach (ColumnHeader head in ListView1.Columns)
+                {
+                    head.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
 
-                    }
                 }
             }
         }

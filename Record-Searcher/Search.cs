@@ -10,22 +10,25 @@ namespace Record_Searcher
     {
 
         private List<Records> RecordSearched;
-        
+        string SearchFor;
+        List<Records> Record;
 
-        public Search()
+        public Search(string _SearchFor, List<Records> _Record)
         {
+            this.Record = _Record;
+            this.SearchFor = _SearchFor;
             RecordSearched = new List<Records>(5);
            
 
         }
 
-        public List<Records> FindPerson(string SearchFor, List<Records> Record)
+        public List<Records> FindPerson()
         {
             var PersonLookup = Record.ToLookup(x => x.person);
             RecordSearched =  PersonLookup[SearchFor].ToList();
             return RecordSearched;
         }
-        public List<Records> FindName(string SearchFor, List<Records> Record, bool LastName )
+        public List<Records> FindName( bool LastName )
         {
             
             if(LastName)

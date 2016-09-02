@@ -69,15 +69,16 @@ namespace Record_Searcher
             Utility util = new Utility();
             if (textBox1.Text != "")
             {
-                Search search = new Search();
+                
                 string SearchFor = textBox1.Text;
                 foreach (List<Records> records in AllTypes)
                 {
                     CurrentRecords = records;
-                    foreach (Records rec in search.FindPerson(SearchFor, CurrentRecords))
+                    Search search = new Search(SearchFor, CurrentRecords);
+                    foreach (Records rec in search.FindPerson())
                     {
                         Set_Display(rec, util.PagesToDisplay(rec.Pages));
-
+                        
                     }
                 }
             }
