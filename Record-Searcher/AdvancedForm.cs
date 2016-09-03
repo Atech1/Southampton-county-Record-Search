@@ -15,7 +15,7 @@ namespace Record_Searcher
         List<Records> CurrentRecords;
         List<List<Records>> AllTypes;
         private Type type;
-
+        const int normalRange = 10;
         public AdvancedForm()
         {
             InitializeComponent();
@@ -128,6 +128,42 @@ namespace Record_Searcher
 
                 return;
             }
+        }
+        private int[] GetValidDateRange()
+        {
+            int[] DateRange = new int[2];
+            int i;
+            if(DateBox.Text != null)
+            {
+                //see if a valid number is already in the box.
+                if(int.TryParse(DateBox.Text, out i))
+                {
+                    DateRange[0] = i - normalRange;
+                    DateRange[1] = i + normalRange;
+                    return DateRange;
+                }
+                else
+                {
+                    var info = DateBox.Text.Split('-').Select(x => x.Trim('[',']')).ToArray();
+                    for(int j = 0; j < info.Count(); j++)
+                    {
+                        if(int.TryParse(info[j], out i))
+                        {
+                            DateRange[j] = i;
+
+                        }
+                        else
+                        {
+                            DateRange[j] = 0;
+                        }
+
+                    }
+                    return DateRange;
+
+                }
+
+            }
+            return DateRange;
         }
 
         

@@ -108,7 +108,7 @@
             this.TypeBox.ItemHeight = 23;
             this.TypeBox.Location = new System.Drawing.Point(68, 60);
             this.TypeBox.Name = "TypeBox";
-            this.TypeBox.Size = new System.Drawing.Size(82, 29);
+            this.TypeBox.Size = new System.Drawing.Size(86, 29);
             this.TypeBox.TabIndex = 5;
             this.TypeBox.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.TypeBox.UseSelectable = true;
@@ -151,7 +151,7 @@
             this.FirstNameBox.CustomButton.UseSelectable = true;
             this.FirstNameBox.CustomButton.Visible = false;
             this.FirstNameBox.Lines = new string[0];
-            this.FirstNameBox.Location = new System.Drawing.Point(434, 64);
+            this.FirstNameBox.Location = new System.Drawing.Point(434, 63);
             this.FirstNameBox.MaxLength = 32767;
             this.FirstNameBox.Name = "FirstNameBox";
             this.FirstNameBox.PasswordChar = '\0';
