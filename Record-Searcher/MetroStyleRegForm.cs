@@ -14,12 +14,22 @@ namespace Record_Searcher
     {
         List<Records> CurrentRecords;
         List<List<Records>> AllTypes;
-        private Type type;
+        [Flags]
+        enum Searchingfor
+        {
+            NONE = 0,
+            TYPE = 1 << 0,
+            BOOK = 1 << 1,
+            FIRSTNAME = 1 << 2,
+            LASTNAME = 1 << 3,
+            DATE = 1 << 4,
+            PAGE = 1 << 5
+        }
 
         public MetroStyleRegForm()
         {
             InitializeComponent();
-         //   Set_ListView();
+            //   Set_ListView();
 
             SearchBox.Focus();
 
@@ -47,7 +57,7 @@ namespace Record_Searcher
             Utility util = new Utility();
             if (SearchBox.Text != "")
             {
-              
+
                 string SearchFor = SearchBox.Text;
                 Set_ListView();
                 foreach (List<Records> records in AllTypes)
@@ -59,7 +69,7 @@ namespace Record_Searcher
                         Set_Display(rec, util.PagesToDisplay(rec.Pages));
 
                     }
-                   
+
                 }
                 foreach (ColumnHeader head in ListView1.Columns)
                 {
@@ -82,18 +92,18 @@ namespace Record_Searcher
                
             });
             ListView1.Items.Add(ToBeDisplayed);
-            
-         
+
+
         }
         private async Task LoadForm()
         {
             Btn1.Enabled = false;
             progressBar1.Show();
             ListView1.Enabled = false;
-           // int CountProgress;
-        //    type = new Type("Deed", Program.DirectoryPath);
+            // int CountProgress;
+            //    type = new Type("Deed", Program.DirectoryPath);
             Utility util = new Utility();
-            string[] types = Type.NumberOfValidTypes();  
+            string[] types = Type.NumberOfValidTypes();
             progressBar1.Value = 4;
             Cursor.Current = Cursors.WaitCursor;
             this.UseWaitCursor = true;
@@ -105,9 +115,9 @@ namespace Record_Searcher
                 RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1]));
 
                 AllTypes.Add(RunThroughTypeList);
-               // CountProgress =  (i - 1) * (100 / types.Count());
+                // CountProgress =  (i - 1) * (100 / types.Count());
                 progressBar1.Value = i * (100 / types.Count());
-               
+
             }
             this.UseWaitCursor = false;
             Cursor.Current = Cursors.Default;
@@ -119,8 +129,8 @@ namespace Record_Searcher
 
         private async void MetroStyleRegForm_Load(object sender, EventArgs e)
         {
-            
-          await LoadForm();
+
+            await LoadForm();
         }
 
         private async void metroTile1_Click(object sender, EventArgs e)
@@ -128,6 +138,16 @@ namespace Record_Searcher
             ListView1.Clear();
             await LoadForm();
         }
-      
+        private async Task CheckFlags(Searchingfor flags = Searchingfor.NONE)
+        {
+            switch (flags)
+            {
+                case Searchingfor.NONE:
+                    await LoadForm();
+                    return;
+
+            }
+
         }
     }
+}

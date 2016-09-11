@@ -42,6 +42,8 @@
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.DateBox = new MetroFramework.Controls.MetroTextBox();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
+            this.PageBox = new MetroFramework.Controls.MetroTextBox();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -81,10 +83,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.ListView1.FullRowSelect = true;
-            this.ListView1.Location = new System.Drawing.Point(23, 123);
+            this.ListView1.Location = new System.Drawing.Point(23, 136);
             this.ListView1.Name = "ListView1";
             this.ListView1.OwnerDraw = true;
-            this.ListView1.Size = new System.Drawing.Size(808, 339);
+            this.ListView1.Size = new System.Drawing.Size(808, 326);
             this.ListView1.TabIndex = 3;
             this.ListView1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.ListView1.UseCompatibleStateImageBehavior = false;
@@ -260,11 +262,55 @@
             this.metroLabel5.Text = "Date:";
             this.metroLabel5.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
+            // metroLabel6
+            // 
+            this.metroLabel6.AutoSize = true;
+            this.metroLabel6.Location = new System.Drawing.Point(21, 104);
+            this.metroLabel6.Name = "metroLabel6";
+            this.metroLabel6.Size = new System.Drawing.Size(41, 19);
+            this.metroLabel6.Style = MetroFramework.MetroColorStyle.Black;
+            this.metroLabel6.TabIndex = 14;
+            this.metroLabel6.Text = "Page:";
+            this.metroLabel6.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // PageBox
+            // 
+            // 
+            // 
+            // 
+            this.PageBox.CustomButton.Image = null;
+            this.PageBox.CustomButton.Location = new System.Drawing.Point(64, 1);
+            this.PageBox.CustomButton.Name = "";
+            this.PageBox.CustomButton.Size = new System.Drawing.Size(21, 21);
+            this.PageBox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.PageBox.CustomButton.TabIndex = 1;
+            this.PageBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.PageBox.CustomButton.UseSelectable = true;
+            this.PageBox.CustomButton.Visible = false;
+            this.PageBox.Lines = new string[0];
+            this.PageBox.Location = new System.Drawing.Point(68, 99);
+            this.PageBox.MaxLength = 32767;
+            this.PageBox.Name = "PageBox";
+            this.PageBox.PasswordChar = '\0';
+            this.PageBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.PageBox.SelectedText = "";
+            this.PageBox.SelectionLength = 0;
+            this.PageBox.SelectionStart = 0;
+            this.PageBox.ShortcutsEnabled = true;
+            this.PageBox.Size = new System.Drawing.Size(86, 23);
+            this.PageBox.TabIndex = 15;
+            this.PageBox.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.PageBox.UseSelectable = true;
+            this.PageBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.PageBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // 
             // AdvancedForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 555);
+            this.Controls.Add(this.PageBox);
+            this.Controls.Add(this.metroLabel6);
             this.Controls.Add(this.metroLabel5);
             this.Controls.Add(this.DateBox);
             this.Controls.Add(this.metroLabel4);
@@ -304,5 +350,7 @@
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroTextBox DateBox;
         private MetroFramework.Controls.MetroLabel metroLabel5;
+        private MetroFramework.Controls.MetroLabel metroLabel6;
+        private MetroFramework.Controls.MetroTextBox PageBox;
     }
 }
