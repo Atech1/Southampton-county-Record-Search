@@ -114,7 +114,7 @@
             this.TypeBox.TabIndex = 5;
             this.TypeBox.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.TypeBox.UseSelectable = true;
-            this.TypeBox.SelectionChangeCommitted += new System.EventHandler(this.BookBoxUpdate);
+            this.TypeBox.SelectionChangeCommitted += new System.EventHandler(this.TypeSelected);
             // 
             // BookBox
             // 
@@ -126,7 +126,7 @@
             this.BookBox.TabIndex = 6;
             this.BookBox.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.BookBox.UseSelectable = true;
-            this.BookBox.SelectionChangeCommitted += new System.EventHandler(this.DateUpdate);
+            this.BookBox.SelectionChangeCommitted += new System.EventHandler(this.BookSelected);
             // 
             // metroLabel2
             // 
@@ -303,6 +303,7 @@
             this.PageBox.UseSelectable = true;
             this.PageBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.PageBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.PageBox.Leave += new System.EventHandler(this.CheckPageNumber);
             // 
             // AdvancedForm
             // 

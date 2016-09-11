@@ -18,17 +18,35 @@ namespace Record_Searcher
             this.SearchFor = _SearchFor;
             RecordSearched = new List<Records>(5);
         }
-        public  List<Records> FindBook(Type type)
+        public AdvancedSearch(List<Records> _Record) : base(_Record)
        {
-           var BookLookup = Record.ToLookup(x => x.Title);
-           RecordSearched = BookLookup[SearchFor].ToList();
+           this.Record = _Record;
+           RecordSearched = new List<Records>(5);
+
+       }
+        //finds all books of type:....
+        public  List<Records> FindBooksOfType(Type type)
+       {
+           var BookLookup = Record.ToLookup(x => x.type);
+           RecordSearched = BookLookup[type].ToList();
            return RecordSearched;
        }
+        //Finds the max Page in a list of books.
         public int MaxPage(List<Records> Books)
         {
             int LargestPage = 0;
-            LargestPage = Books.SelectMany(x => x.Pages).Max();
+            var NumberList = Books.Select(x => x.Pages.Max());
+            LargestPage = NumberList.Max();
             return LargestPage;
+        }
+        //this finds a specific book  BookName = Book 1, etc.
+        //type is needed to find a exact book, not just all Book 1's.
+        public List<Records> FindABook(Type type, string BookName)
+        {
+         //   List<Records> AllBookOfType = FindBooksOfType(type);
+            var BookLookup = Record.ToLookup(x => x.Title);
+            RecordSearched = BookLookup[BookName].ToList();
+            return RecordSearched;
         }
 
         public List<Records> FindPage(List<Records> Books, int find_number)
@@ -37,9 +55,22 @@ namespace Record_Searcher
             //cycle through a list of the right books, and ask if Pages.select(x => s.contains(Find_number).any();
             if (find_number > 0)
             {
-               // RecordSearched = Books.SelectMany(x => x.Pages.Contains(find_number)).ToList();
+                foreach (Records record in Books)
+                {
+                    if (record.Pages.Any(x => x == find_number))
+                    {
+                        RecordSearched.Add(record);
+
+
+                    }
+
+                }
+                return RecordSearched;
             }
-            return RecordSearched;
+            else
+            {
+                return RecordSearched;
+            }
            
         }
 

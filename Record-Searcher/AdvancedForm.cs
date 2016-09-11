@@ -16,22 +16,35 @@ namespace Record_Searcher
         List<List<Records>> AllTypes;
         private Type type;
         const int normalRange = 10;
+        string[] types;
+        [Flags]
+        enum GivenInfo
+        {
+            NONE = 0,
+            TYPE = 1 << 0,
+            BOOK = 1 << 1,
+            FIRSTNAME = 1 << 2,
+            LASTNAME = 1 << 3,
+            DATE = 1 << 4,
+            PAGE = 1 << 5
+        }
+        GivenInfo Flags;
+
         public AdvancedForm()
         {
             InitializeComponent();
             CurrentRecords = new List<Records>();
             AllTypes = new List<List<Records>>(3);
         }
-
+        //loads all the records
         private async Task LoadForm()
         {
             Btn1.Enabled = false;
             progressBar1.Show();
             ListView1.Enabled = false;
-            // int CountProgress;
             type = new Type("Deed");
             Utility util = new Utility();
-            string[] types = Type.NumberOfValidTypes();
+             types = Type.NumberOfValidTypes();
             progressBar1.Value = 4;
             Cursor.Current = Cursors.WaitCursor;
             this.UseWaitCursor = true;
@@ -60,21 +73,22 @@ namespace Record_Searcher
         {
             await LoadForm();
         }
-
+        //reloads records
         private async void Reload(object sender, EventArgs e)
         {
             await LoadForm();
         }
-
+        //sets the data source of the type box.
         private void TypeBoxSet()
         {
             List<string> types = new List<string>();
             types.Add("All");
             types.AddRange(Type.NumberOfValidTypes());
             TypeBox.DataSource = types;
-        }
 
-        private void BookBoxUpdate(object sender, EventArgs e)
+        }
+        //runs when type is selected to give the correct number of books to the other box.
+        private void TypeSelected(object sender, EventArgs e)
         {
             string selected = this.TypeBox.GetItemText(this.TypeBox.SelectedItem);
             if(selected == "All")
@@ -85,11 +99,12 @@ namespace Record_Searcher
             {
                 Utility util = new Utility();
                 BookBox.DataSource = util.DictionaryKeys(new Type(selected));
+                Flags |= GivenInfo.TYPE;
 
             }
         }
-
-        private void DateUpdate(object sender, EventArgs e)
+        //gives the correct date to the date box
+        private void BookSelected(object sender, EventArgs e)
         {
             if (this.BookBox.SelectedItem != null)
             {
@@ -100,6 +115,7 @@ namespace Record_Searcher
                 if (Int32.TryParse(selected.Trim('B', 'o', 'k'), out i))
                 {
                     DateBox.Text = util.DateGetter(UsedType, i);
+                    Flags |= GivenInfo.BOOK;
 
                 }
             }
@@ -108,7 +124,7 @@ namespace Record_Searcher
                 return;
             }
         }
-
+        //checks to see if the date is right when the date is typed rather than passed
         private void ValidateDate(object sender, EventArgs e)
         {
             int date;
@@ -122,6 +138,7 @@ namespace Record_Searcher
                 {
                     DateBox.Text = "1881";
                 }
+                Flags |= GivenInfo.DATE;
             }
             else
             {
@@ -129,6 +146,7 @@ namespace Record_Searcher
                 return;
             }
         }
+        //returns the min year and the max year for purposes of searching dates.
         private int[] GetValidDateRange()
         {
             int[] DateRange = new int[2];
@@ -165,7 +183,49 @@ namespace Record_Searcher
             }
             return DateRange;
         }
+        //checks which search will be called based on the flags raised with the other info passed in.
+        private async Task CheckFlags(GivenInfo flags = GivenInfo.NONE)
+        {
+            switch (flags)
+            {
+                case GivenInfo.NONE:
+                    await LoadForm();
+                    return;
 
+            }
+
+        }
+        //checks to see if the page number is within the right range  1 < x < AdvancedSearch.MaxPage();
+        private void CheckPageNumber(object sender, EventArgs e)
+        {
+            string selectedType = this.TypeBox.GetItemText(this.TypeBox.SelectedItem);
+            string selectedBook = this.BookBox.GetItemText(this.BookBox.SelectedItem);
+            //The Records are Organized By Type.
+            if (Flags.HasFlag(GivenInfo.TYPE) && Flags.HasFlag(GivenInfo.BOOK))
+            {
+                //sees which type is checked in the box.
+                for(int i = 0; i < types.Count(); i++)
+                {
+                    //finds if the right type has been selected
+                    if(types[i] == selectedType)
+                    {
+                        //grabs the right index of the list holding the records.
+                        //it should be in the same position as the type[i] as they were intialized in that order.
+                     //   List<Records> Selected = AllTypes[i];
+                        AdvancedSearch search = new AdvancedSearch(AllTypes[i]);
+                        //searches for a specific book title
+                      List<Records> Books =  search.FindABook(new Type(selectedType), selectedBook);
+                        //now finding out if the pagenumber was broken or not.
+                      PageBox.Text = search.MaxPage(Books).ToString();
+                    }
+                }
+
+            }
+            else
+            {
+                return;
+            }
+        }
         
     }
 }

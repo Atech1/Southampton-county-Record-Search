@@ -14,20 +14,10 @@ namespace Record_Searcher
     {
         List<Records> CurrentRecords;
         List<List<Records>> AllTypes;
-        [Flags]
-        enum Searchingfor
-        {
-            NONE = 0,
-            TYPE = 1 << 0,
-            BOOK = 1 << 1,
-            FIRSTNAME = 1 << 2,
-            LASTNAME = 1 << 3,
-            DATE = 1 << 4,
-            PAGE = 1 << 5
-        }
-
+       
         public MetroStyleRegForm()
         {
+            
             InitializeComponent();
             //   Set_ListView();
 
@@ -138,16 +128,6 @@ namespace Record_Searcher
             ListView1.Clear();
             await LoadForm();
         }
-        private async Task CheckFlags(Searchingfor flags = Searchingfor.NONE)
-        {
-            switch (flags)
-            {
-                case Searchingfor.NONE:
-                    await LoadForm();
-                    return;
-
-            }
-
-        }
+     
     }
 }

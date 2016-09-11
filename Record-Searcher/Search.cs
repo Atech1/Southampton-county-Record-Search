@@ -21,7 +21,12 @@ namespace Record_Searcher
            
 
         }
+        public Search(List<Records> _Record)
+        {
+            this.Record = _Record;
+            RecordSearched = new List<Records>(5);
 
+        }
         public List<Records> FindPerson()
         {
             var PersonLookup = Record.ToLookup(x => x.person);
