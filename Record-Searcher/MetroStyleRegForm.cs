@@ -91,7 +91,7 @@ namespace Record_Searcher
             progressBar1.Show();
             ListView1.Enabled = false;
            // int CountProgress;
-            type = new Type("Deed", Program.DirectoryPath);
+        //    type = new Type("Deed", Program.DirectoryPath);
             Utility util = new Utility();
             string[] types = Type.NumberOfValidTypes();  
             progressBar1.Value = 4;
@@ -99,10 +99,10 @@ namespace Record_Searcher
             this.UseWaitCursor = true;
             for (int i = 1; i < types.Count() + 1; i++)
             {
-                Reader Formatter = new Reader(util.FindFiles(type.GeneratePathsForTypes(types[i - 1])), Utility.GetTitle());
+                Reader Formatter = new Reader(util.FindFiles(Type.GeneratePathsForTypes(types[i - 1])), Utility.GetTitle());
                 List<Records> RunThroughTypeList = new List<Records>();
 
-                RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1], Program.DirectoryPath));
+                RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1]));
 
                 AllTypes.Add(RunThroughTypeList);
                // CountProgress =  (i - 1) * (100 / types.Count());

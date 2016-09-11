@@ -23,11 +23,10 @@ namespace Record_Searcher
         //
        private static string BasePath;
        
-        public Type(String _StartingType, string basepath)
+        public Type(String _StartingType)
         {
-             
             type = null;
-            BasePath = basepath;
+            BasePath = Program.DirectoryPath;
             IntializeValues(_StartingType);
             if(type == null)
             {
@@ -87,7 +86,7 @@ namespace Record_Searcher
 
         //makes a path that will be fed into the utility functions that will get all the different files in the folder.
         //this will grab the reference to that folder and make this more generic, rather than grabbing specific folders each time that utility function is called.
-        public string GeneratePathsForTypes(string _WantedBasePath)
+        public static string GeneratePathsForTypes(string _WantedBasePath)
         {
             if (CorrectType(_WantedBasePath))
             {

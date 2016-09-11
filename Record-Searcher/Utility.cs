@@ -180,12 +180,12 @@ namespace Record_Searcher
             String title = "Book ";
             return title;
         }
-        public string[] DictionaryKeys(string Validtype)
+        public string[] DictionaryKeys(Type Validtype)
         {
             string[] BookNames;
-            if (Type.CorrectType(Validtype))
-            {
-                if (Validtype == "Deed")
+           
+            
+                if (Validtype.GetName() == "Deed")
                 {
                     BookNames = new string[DeedDates.Count];
                     for (int i = 0; i < DeedDates.Count; i++)
@@ -195,7 +195,7 @@ namespace Record_Searcher
                     }
                     return BookNames;
                 }
-                if (Validtype == "Will")
+                if (Validtype.GetName() == "Will")
                 {
                     BookNames = new string[WillDates.Count];
                     for (int i = 0; i < WillDates.Count; i++)
@@ -211,13 +211,9 @@ namespace Record_Searcher
                     return BookNames;
 
                 }
-            }
-            else
-            {
-                return new string[1];
-            }
-
+            
         }
-       
+
+
     }
 }

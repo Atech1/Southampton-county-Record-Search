@@ -44,15 +44,15 @@ namespace Record_Searcher
             progressBar1.Show();
             listView1.Enabled = false;
 
-            type = new Type("Deed", Program.DirectoryPath);
+         //   type = new Type("Deed");
             Utility util = new Utility();
             string[] types = Type.NumberOfValidTypes();
             for (int i = 1; i < types.Count() + 1; i++)
             {
-                Reader Formatter = new Reader(util.FindFiles(type.GeneratePathsForTypes(types[i - 1])), Utility.GetTitle());
+                Reader Formatter = new Reader(util.FindFiles(Type.GeneratePathsForTypes(types[i - 1])), Utility.GetTitle());
                 List<Records> RunThroughTypeList = new List<Records>();
 
-                RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1], Program.DirectoryPath));
+                RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1]));
 
                 AllTypes.Add(RunThroughTypeList);
                 progressBar1.Value = i * (100 / types.Count());

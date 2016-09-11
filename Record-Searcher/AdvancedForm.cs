@@ -29,7 +29,7 @@ namespace Record_Searcher
             progressBar1.Show();
             ListView1.Enabled = false;
             // int CountProgress;
-            type = new Type("Deed", Program.DirectoryPath);
+            type = new Type("Deed");
             Utility util = new Utility();
             string[] types = Type.NumberOfValidTypes();
             progressBar1.Value = 4;
@@ -37,10 +37,10 @@ namespace Record_Searcher
             this.UseWaitCursor = true;
             for (int i = 1; i < types.Count() + 1; i++)
             {
-                Reader Formatter = new Reader(util.FindFiles(type.GeneratePathsForTypes(types[i - 1])), Utility.GetTitle());
+                Reader Formatter = new Reader(util.FindFiles(Type.GeneratePathsForTypes(types[i - 1])), Utility.GetTitle());
                 List<Records> RunThroughTypeList = new List<Records>();
 
-                RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1], Program.DirectoryPath));
+                RunThroughTypeList = await Formatter.ConvertToRecordAsync(new Type(types[i - 1]));
 
                 AllTypes.Add(RunThroughTypeList);
                 
@@ -81,10 +81,10 @@ namespace Record_Searcher
             {
                 return;
             }
-            else
+            else if(Type.CorrectType(selected))
             {
                 Utility util = new Utility();
-                BookBox.DataSource = util.DictionaryKeys(selected);
+                BookBox.DataSource = util.DictionaryKeys(new Type(selected));
 
             }
         }
@@ -94,7 +94,7 @@ namespace Record_Searcher
             if (this.BookBox.SelectedItem != null)
             {
                 Utility util = new Utility();
-                Type UsedType = new Type(this.TypeBox.GetItemText(this.TypeBox.SelectedItem), Program.DirectoryPath);
+                Type UsedType = new Type(this.TypeBox.GetItemText(this.TypeBox.SelectedItem));
                 string selected = this.BookBox.GetItemText(this.BookBox.SelectedItem);
                 int i;
                 if (Int32.TryParse(selected.Trim('B', 'o', 'k'), out i))
