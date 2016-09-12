@@ -127,8 +127,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.ListView1.FullRowSelect = true;
+            this.ListView1.HideSelection = false;
             this.ListView1.Location = new System.Drawing.Point(7, 121);
             this.ListView1.Name = "ListView1";
+            this.ListView1.OwnerDraw = true;
             this.ListView1.Size = new System.Drawing.Size(648, 293);
             this.ListView1.TabIndex = 6;
             this.ListView1.UseCompatibleStateImageBehavior = false;

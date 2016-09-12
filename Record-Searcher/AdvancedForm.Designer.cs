@@ -31,7 +31,6 @@
             this.progressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.Btn1 = new MetroFramework.Controls.MetroTile();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            this.ListView1 = new MetroFramework.Controls.MetroListView();
             this.metroTile2 = new MetroFramework.Controls.MetroTile();
             this.TypeBox = new MetroFramework.Controls.MetroComboBox();
             this.BookBox = new MetroFramework.Controls.MetroComboBox();
@@ -44,6 +43,7 @@
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
             this.PageBox = new MetroFramework.Controls.MetroTextBox();
+            this.ListView1 = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -65,6 +65,7 @@
             this.Btn1.TabIndex = 1;
             this.Btn1.Text = "Search";
             this.Btn1.UseSelectable = true;
+            this.Btn1.Click += new System.EventHandler(this.search);
             // 
             // metroLabel1
             // 
@@ -75,22 +76,6 @@
             this.metroLabel1.TabIndex = 2;
             this.metroLabel1.Text = "Type:";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // ListView1
-            // 
-            this.ListView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListView1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.ListView1.FullRowSelect = true;
-            this.ListView1.Location = new System.Drawing.Point(23, 136);
-            this.ListView1.Name = "ListView1";
-            this.ListView1.OwnerDraw = true;
-            this.ListView1.Size = new System.Drawing.Size(808, 326);
-            this.ListView1.TabIndex = 3;
-            this.ListView1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.ListView1.UseCompatibleStateImageBehavior = false;
-            this.ListView1.UseSelectable = true;
             // 
             // metroTile2
             // 
@@ -305,11 +290,20 @@
             this.PageBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             this.PageBox.Leave += new System.EventHandler(this.CheckPageNumber);
             // 
+            // ListView1
+            // 
+            this.ListView1.Location = new System.Drawing.Point(23, 128);
+            this.ListView1.Name = "ListView1";
+            this.ListView1.Size = new System.Drawing.Size(808, 339);
+            this.ListView1.TabIndex = 16;
+            this.ListView1.UseCompatibleStateImageBehavior = false;
+            // 
             // AdvancedForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 555);
+            this.Controls.Add(this.ListView1);
             this.Controls.Add(this.PageBox);
             this.Controls.Add(this.metroLabel6);
             this.Controls.Add(this.metroLabel5);
@@ -322,7 +316,6 @@
             this.Controls.Add(this.BookBox);
             this.Controls.Add(this.TypeBox);
             this.Controls.Add(this.metroTile2);
-            this.Controls.Add(this.ListView1);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.Btn1);
             this.Controls.Add(this.progressBar1);
@@ -340,7 +333,6 @@
         private MetroFramework.Controls.MetroProgressBar progressBar1;
         private MetroFramework.Controls.MetroTile Btn1;
         private MetroFramework.Controls.MetroLabel metroLabel1;
-        private MetroFramework.Controls.MetroListView ListView1;
         private MetroFramework.Controls.MetroTile metroTile2;
         private MetroFramework.Controls.MetroComboBox TypeBox;
         private MetroFramework.Controls.MetroComboBox BookBox;
@@ -353,5 +345,6 @@
         private MetroFramework.Controls.MetroLabel metroLabel5;
         private MetroFramework.Controls.MetroLabel metroLabel6;
         private MetroFramework.Controls.MetroTextBox PageBox;
+        private System.Windows.Forms.ListView ListView1;
     }
 }

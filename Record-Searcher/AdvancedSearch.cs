@@ -32,7 +32,7 @@ namespace Record_Searcher
            return RecordSearched;
        }
         //Finds the max Page in a list of books.
-        public int MaxPage(List<Records> Books)
+        public int  MaxPage(List<Records> Books)
         {
             int LargestPage = 0;
             var NumberList = Books.Select(x => x.Pages.Max());
@@ -41,7 +41,7 @@ namespace Record_Searcher
         }
         //this finds a specific book  BookName = Book 1, etc.
         //type is needed to find a exact book, not just all Book 1's.
-        public List<Records> FindABook(Type type, string BookName)
+        public  List<Records> FindABook(string BookName)
         {
          //   List<Records> AllBookOfType = FindBooksOfType(type);
             var BookLookup = Record.ToLookup(x => x.Title);
@@ -51,27 +51,35 @@ namespace Record_Searcher
 
         public List<Records> FindPage(List<Records> Books, int find_number)
         {
+            List<Records> PagesinBooks = new List<Records>();
             //change this to be a for loop instead to be easier to understand.
             //cycle through a list of the right books, and ask if Pages.select(x => s.contains(Find_number).any();
             if (find_number > 0)
             {
-                foreach (Records record in Books)
+                foreach(Records record in Books)
                 {
-                    if (record.Pages.Any(x => x == find_number))
+                   foreach( int page in record.Pages)
                     {
-                        RecordSearched.Add(record);
-
-
+                        if (page == find_number)
+                        {
+                            PagesinBooks.Add(record);
+                        }
                     }
 
                 }
-                return RecordSearched;
+                return PagesinBooks;
             }
             else
             {
                 return RecordSearched;
             }
            
+        }
+        public async Task<List<Records>> AsyncFindPage(List<Records> Books, int find_number)
+        {
+           return await Task.Factory.StartNew(() => FindPage(Books, find_number));
+
+
         }
 
 
