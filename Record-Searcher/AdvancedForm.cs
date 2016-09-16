@@ -108,19 +108,21 @@ namespace Record_Searcher
             string selected = this.TypeBox.GetItemText(this.TypeBox.SelectedItem);
             if (selected == "All")
             {
-                Flags -= GivenInfo.TYPE;
-                BookBox.DataSource = null;
-                if(Flags.HasFlag(GivenInfo.BOOK))
+                if (Flags.HasFlag(GivenInfo.TYPE))
+                {
+                    Flags -= GivenInfo.TYPE;
+                }
+                if (Flags.HasFlag(GivenInfo.BOOK))
                 {
                     Flags -= GivenInfo.BOOK;
                 }
+                BookBox.DataSource = null;          
                 return;
             }
             else if (Type.CorrectType(selected))
             {
                 Utility util = new Utility();
                 BookBox.DataSource = util.DictionaryKeys(new Type(selected));
-               // BookBox.Items.Add("None");
                 Flags |= GivenInfo.TYPE;
 
             }
@@ -128,7 +130,7 @@ namespace Record_Searcher
         //gives the correct date to the date box
         private void BookSelected(object sender, EventArgs e)
         {
-            if (this.BookBox.SelectedItem != null || (this.BookBox.GetItemText(this.BookBox.SelectedItem) == "None"))
+            if (this.BookBox.SelectedItem != null || !(this.BookBox.GetItemText(this.BookBox.SelectedItem) == "None"))
             {
                 Utility util = new Utility();
                 Type UsedType = new Type(this.TypeBox.GetItemText(this.TypeBox.SelectedItem));
@@ -138,12 +140,14 @@ namespace Record_Searcher
                 {
                     DateBox.Text = util.DateGetter(UsedType, i);
                     Flags |= GivenInfo.BOOK;
-
                 }
             }
             else
             {
-                Flags -= GivenInfo.BOOK;
+                if (Flags.HasFlag(GivenInfo.BOOK))
+                {
+                    Flags -= GivenInfo.BOOK;
+                }
                 return;
             }
         }
@@ -281,12 +285,24 @@ namespace Record_Searcher
 
                             }
                         }
+                        else
+                        {
+                            if (Flags.HasFlag(GivenInfo.PAGE))
+                            {
+                                Flags -= GivenInfo.PAGE;
+                            }
+                            PageBox.Text = " ";
+                            return;
+                        }
                     }
                 }
             }
             else
             {
-                Flags -= GivenInfo.PAGE;
+                if (Flags.HasFlag(GivenInfo.PAGE))
+                {
+                    Flags -= GivenInfo.PAGE;
+                }
                PageBox.Text = " ";
                 return;
             }
