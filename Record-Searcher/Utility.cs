@@ -117,6 +117,7 @@ namespace Record_Searcher
             WillDates = new Dictionary<int, string>();
 
             #region Dictionary Declarations
+            DeedDates.Add(0, "None");
             DeedDates.Add(1, "[1749 - 1753]");
             DeedDates.Add(2, "[1753 - 1760]");
             DeedDates.Add(3, "[1763 - 1767]");
@@ -152,6 +153,7 @@ namespace Record_Searcher
             DeedDates.Add(33, "[1877 - 1879]");
             DeedDates.Add(34, "[1879 - 1880]");
             DeedDates.Add(35, "[1880 - 1881]");
+            WillDates.Add(0, "None");
             WillDates.Add(1, "[1747 - 1762]");
             WillDates.Add(2, "[1762 - 1772]");
             WillDates.Add(3, "[1772 - 1783]");
@@ -190,7 +192,14 @@ namespace Record_Searcher
                     BookNames = new string[DeedDates.Count];
                     for (int i = 0; i < DeedDates.Count; i++)
                     {
-                        BookNames[i] = "Book " + (i + 1);
+                        if (i != 0)
+                        {
+                            BookNames[i] = "Book " + (i);
+                        }
+                        else
+                        {
+                            BookNames[0] = DeedDates[0];
+                        }
 
                     }
                     return BookNames;
@@ -200,7 +209,15 @@ namespace Record_Searcher
                     BookNames = new string[WillDates.Count];
                     for (int i = 0; i < WillDates.Count; i++)
                     {
-                        BookNames[i] = "Book " + (i + 1);
+                        if (i != 0)
+                        {
+                            BookNames[i] = "Book " + (i);
+                        }
+                        else
+                        {
+                            BookNames[0] = WillDates[0];
+                        }
+                       
 
                     }
                     return BookNames;

@@ -28,8 +28,22 @@ namespace Record_Searcher
             DATE = 1 << 4,
             PAGE = 1 << 5
         }
-        GivenInfo Flags;
+      private  GivenInfo _Flags;
+        GivenInfo Flags
+      {
+          get
+          {
+              return this._Flags;
+          }
+          set
+          {
+              this._Flags = value;
+              UpdateFlags();
 
+          }
+      }
+
+      
         public AdvancedForm()
         {
             InitializeComponent();
@@ -95,12 +109,18 @@ namespace Record_Searcher
             if (selected == "All")
             {
                 Flags -= GivenInfo.TYPE;
+                BookBox.DataSource = null;
+                if(Flags.HasFlag(GivenInfo.BOOK))
+                {
+                    Flags -= GivenInfo.BOOK;
+                }
                 return;
             }
             else if (Type.CorrectType(selected))
             {
                 Utility util = new Utility();
                 BookBox.DataSource = util.DictionaryKeys(new Type(selected));
+               // BookBox.Items.Add("None");
                 Flags |= GivenInfo.TYPE;
 
             }
@@ -108,7 +128,7 @@ namespace Record_Searcher
         //gives the correct date to the date box
         private void BookSelected(object sender, EventArgs e)
         {
-            if (this.BookBox.SelectedItem != null)
+            if (this.BookBox.SelectedItem != null || (this.BookBox.GetItemText(this.BookBox.SelectedItem) == "None"))
             {
                 Utility util = new Utility();
                 Type UsedType = new Type(this.TypeBox.GetItemText(this.TypeBox.SelectedItem));
@@ -266,7 +286,8 @@ namespace Record_Searcher
             }
             else
             {
-                PageBox.Text = "Error";
+                Flags -= GivenInfo.PAGE;
+               PageBox.Text = " ";
                 return;
             }
 
@@ -345,7 +366,10 @@ namespace Record_Searcher
                 ListView1.Items[i].Remove();
             }
         }
-        
+        private void UpdateFlags()
+        {
+            TestBox.Text = Flags.ToString();
+        }
     }
 }
 

@@ -44,6 +44,7 @@
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
             this.PageBox = new MetroFramework.Controls.MetroTextBox();
             this.ListView1 = new System.Windows.Forms.ListView();
+            this.TestBox = new MetroFramework.Controls.MetroTextBox();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -298,11 +299,42 @@
             this.ListView1.TabIndex = 16;
             this.ListView1.UseCompatibleStateImageBehavior = false;
             // 
+            // TestBox
+            // 
+            // 
+            // 
+            // 
+            this.TestBox.CustomButton.Image = null;
+            this.TestBox.CustomButton.Location = new System.Drawing.Point(53, 1);
+            this.TestBox.CustomButton.Name = "";
+            this.TestBox.CustomButton.Size = new System.Drawing.Size(21, 21);
+            this.TestBox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.TestBox.CustomButton.TabIndex = 1;
+            this.TestBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.TestBox.CustomButton.UseSelectable = true;
+            this.TestBox.CustomButton.Visible = false;
+            this.TestBox.Lines = new string[0];
+            this.TestBox.Location = new System.Drawing.Point(352, 474);
+            this.TestBox.MaxLength = 32767;
+            this.TestBox.Name = "TestBox";
+            this.TestBox.PasswordChar = '\0';
+            this.TestBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.TestBox.SelectedText = "";
+            this.TestBox.SelectionLength = 0;
+            this.TestBox.SelectionStart = 0;
+            this.TestBox.ShortcutsEnabled = true;
+            this.TestBox.Size = new System.Drawing.Size(75, 23);
+            this.TestBox.TabIndex = 17;
+            this.TestBox.UseSelectable = true;
+            this.TestBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.TestBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // 
             // AdvancedForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 555);
+            this.Controls.Add(this.TestBox);
             this.Controls.Add(this.ListView1);
             this.Controls.Add(this.PageBox);
             this.Controls.Add(this.metroLabel6);
@@ -346,5 +378,6 @@
         private MetroFramework.Controls.MetroLabel metroLabel6;
         private MetroFramework.Controls.MetroTextBox PageBox;
         private System.Windows.Forms.ListView ListView1;
+        private MetroFramework.Controls.MetroTextBox TestBox;
     }
 }
