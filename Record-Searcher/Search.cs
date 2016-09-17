@@ -51,8 +51,48 @@ namespace Record_Searcher
 
 
         }
+        public List<Records> FindName(bool LastName, List<Records> Book, string name)
+        {
 
-       
+            if (LastName)
+            {
+                var NameLookup = Book.ToLookup(x => x.LastName);
+                return (RecordSearched = NameLookup[name].ToList());
+
+            }
+            else
+            {
+                var NameLookup = Book.ToLookup(x => x.FirstName);
+                return (RecordSearched = NameLookup[name].ToList());
+
+            }
+
+
+        }
+        public List<Records> FindPerson(string name)
+        {
+            var PersonLookup = Record.ToLookup(x => x.person);
+            RecordSearched = PersonLookup[name].ToList();
+            return RecordSearched;
+        }
+        public List<Records> FindName(bool LastName, string name)
+        {
+
+            if (LastName)
+            {
+                var NameLookup = Record.ToLookup(x => x.LastName);
+                return (RecordSearched = NameLookup[name].ToList());
+
+            }
+            else
+            {
+                var NameLookup = Record.ToLookup(x => x.FirstName);
+                return (RecordSearched = NameLookup[name].ToList());
+
+            }
+
+
+        }
 
     }
 }

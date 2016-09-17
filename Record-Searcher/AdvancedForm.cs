@@ -130,7 +130,7 @@ namespace Record_Searcher
         //gives the correct date to the date box
         private void BookSelected(object sender, EventArgs e)
         {
-            if (this.BookBox.SelectedItem != null || !(this.BookBox.GetItemText(this.BookBox.SelectedItem) == "None"))
+            if (this.BookBox.SelectedItem != null && !(this.BookBox.GetItemText(this.BookBox.SelectedItem) == "None"))
             {
                 Utility util = new Utility();
                 Type UsedType = new Type(this.TypeBox.GetItemText(this.TypeBox.SelectedItem));
@@ -169,7 +169,11 @@ namespace Record_Searcher
             }
             else
             {
+                if(Flags.HasFlag(GivenInfo.DATE))
+                {
+                    Flags -= GivenInfo.DATE;
 
+                }
                 return;
             }
         }
@@ -215,6 +219,8 @@ namespace Record_Searcher
         {
             string selectedType = this.TypeBox.GetItemText(this.TypeBox.SelectedItem);
             string selectedBook = this.BookBox.GetItemText(this.BookBox.SelectedItem);
+            string selectedFirstName = FirstNameBox.Text;
+            string selectedLastName = LastNameBox.Text;
             int selectedPage = 0;
             if (Flags.HasFlag(GivenInfo.PAGE))
             {
@@ -243,6 +249,85 @@ namespace Record_Searcher
                          List<Records> FoundPages = await search.AsyncFindPage(search.FindABook(selectedBook), selectedPage);
                          return FoundPages;
                     }
+                case GivenInfo.TYPE | GivenInfo.LASTNAME:
+                case GivenInfo.TYPE | GivenInfo.FIRSTNAME:
+                    {
+                        bool Last_Name = false;
+                        string UsedName = selectedFirstName;
+                        if (Flags.HasFlag(GivenInfo.LASTNAME))
+                        {
+                            Last_Name = true;
+                            UsedName = selectedLastName;
+                        }
+                        Search search = new Search(FindListOfType(selectedType));
+
+                            return search.FindName(Last_Name, UsedName);
+                    }
+                case GivenInfo.TYPE | GivenInfo.BOOK | GivenInfo.LASTNAME:
+                case GivenInfo.TYPE | GivenInfo.BOOK | GivenInfo.FIRSTNAME:
+                    {
+                        bool Last_Name = false;
+                        string UsedName = selectedFirstName;
+                        if (Flags.HasFlag(GivenInfo.LASTNAME))
+                        {
+                            Last_Name = true;
+                            UsedName = selectedLastName;
+                        }
+                        AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
+
+                        return search.FindName(Last_Name, search.FindABook(selectedBook), UsedName);
+                    }
+                case GivenInfo.TYPE | GivenInfo.BOOK | GivenInfo.LASTNAME | GivenInfo.PAGE:
+                case GivenInfo.TYPE | GivenInfo.BOOK | GivenInfo.FIRSTNAME | GivenInfo.PAGE:
+                    {
+                        bool Last_Name = false;
+                        string UsedName = selectedFirstName;
+                        if (Flags.HasFlag(GivenInfo.LASTNAME))
+                        {
+                            Last_Name = true;
+                            UsedName = selectedLastName;
+                        }
+                        AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
+                        List<Records> PageSearch =  await search.AsyncFindPage(search.FindABook(selectedBook), selectedPage );
+                        return search.FindName(Last_Name, PageSearch, UsedName);
+                    }
+                case  GivenInfo.LASTNAME:
+                case  GivenInfo.FIRSTNAME:
+                    {
+                        bool Last_Name = false;
+                        if (Flags.HasFlag(GivenInfo.LASTNAME))
+                        {
+                            Last_Name = true;
+                        }
+                        List<Records> searchingNames = new List<Records>();
+                        foreach (List<Records> rec in AllTypes)
+                        {
+                            AdvancedSearch search = new AdvancedSearch(rec);
+                            List<Records> FoundNames = search.FindName(Last_Name);
+                            searchingNames.Union(FoundNames);
+                        }
+                        return searchingNames;
+                    }
+                case GivenInfo.LASTNAME | GivenInfo.FIRSTNAME:
+                    {
+                       
+                        List<Records> searchingNames = new List<Records>();
+                        foreach (List<Records> rec in AllTypes)
+                        {
+                            AdvancedSearch search = new AdvancedSearch(rec);
+                            List<Records> FoundNames = search.FindPerson(selectedLastName + ", " + selectedFirstName);
+                            searchingNames.Union(FoundNames);
+                        }
+                        return searchingNames;
+                    }
+                case GivenInfo.TYPE |  GivenInfo.LASTNAME | GivenInfo.FIRSTNAME:
+                    {
+                        AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
+                        return search.FindPerson(selectedLastName + ", " + selectedFirstName);
+                    }
+
+
+                    
             }
             return null;
 
@@ -348,16 +433,20 @@ namespace Record_Searcher
             {
                 ClearListView();
             }
+            NameFlags();
             Utility util = new Utility();
             List<Records> Result = await CheckFlags(Flags);
-            foreach (Records rec in Result)
+            if (Result != null)
             {
-                Set_Display(rec, util.PagesToDisplay(rec.Pages));
-            }
-            foreach (ColumnHeader head in ListView1.Columns)
-            {
-                head.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                foreach (Records rec in Result)
+                {
+                    Set_Display(rec, util.PagesToDisplay(rec.Pages));
+                }
+                foreach (ColumnHeader head in ListView1.Columns)
+                {
+                    head.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
 
+                }
             }
            
         }
@@ -385,6 +474,35 @@ namespace Record_Searcher
         private void UpdateFlags()
         {
             TestBox.Text = Flags.ToString();
+        }
+        private void NameFlags()
+        {
+            if(FirstNameBox.Text.Trim() != null && !string.IsNullOrWhiteSpace(FirstNameBox.Text))
+            {
+                Flags |= GivenInfo.FIRSTNAME;
+            }
+            else
+            {
+                if(Flags.HasFlag(GivenInfo.FIRSTNAME))
+                {
+                    Flags -= GivenInfo.FIRSTNAME;
+                    return;
+                }
+
+            }
+            if (LastNameBox.Text.Trim() != null && !string.IsNullOrWhiteSpace(LastNameBox.Text))
+            {
+                Flags |= GivenInfo.LASTNAME;
+            }
+            else
+            {
+                if (Flags.HasFlag(GivenInfo.LASTNAME))
+                {
+                    Flags -= GivenInfo.LASTNAME;
+                    return;
+                }
+            }
+
         }
     }
 }
