@@ -230,7 +230,42 @@ namespace Record_Searcher
                 }
             
         }
+        public int[] GetValidDateRange(string Date, int normalRange)
+        {
+            int[] DateRange = new int[2];
+            int i;
+            if (Date != null)
+            {
+                //see if a valid number is already in the box.
+                if (int.TryParse(Date, out i))
+                {
+                    DateRange[0] = i - normalRange;
+                    DateRange[1] = i + normalRange;
+                    return DateRange;
+                }
+                else
+                {
+                    var info = Date.Split('-').Select(x => x.Trim('[', ']')).ToArray();
+                    for (int j = 0; j < info.Count(); j++)
+                    {
+                        if (int.TryParse(info[j], out i))
+                        {
+                            DateRange[j] = i;
 
+                        }
+                        else
+                        {
+                            DateRange[j] = 0;
+                        }
+
+                    }
+                    return DateRange;
+
+                }
+
+            }
+            return DateRange;
+        }
 
     }
 }

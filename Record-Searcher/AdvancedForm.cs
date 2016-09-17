@@ -178,14 +178,14 @@ namespace Record_Searcher
             }
         }
         //returns the min year and the max year for purposes of searching dates.
-        private int[] GetValidDateRange()
+        private int[] GetValidDateRange(string Date)
         {
             int[] DateRange = new int[2];
             int i;
-            if (DateBox.Text != null)
+            if (Date != null)
             {
                 //see if a valid number is already in the box.
-                if (int.TryParse(DateBox.Text, out i))
+                if (int.TryParse(Date, out i))
                 {
                     DateRange[0] = i - normalRange;
                     DateRange[1] = i + normalRange;
@@ -193,7 +193,7 @@ namespace Record_Searcher
                 }
                 else
                 {
-                    var info = DateBox.Text.Split('-').Select(x => x.Trim('[', ']')).ToArray();
+                    var info = Date.Split('-').Select(x => x.Trim('[', ']')).ToArray();
                     for (int j = 0; j < info.Count(); j++)
                     {
                         if (int.TryParse(info[j], out i))
@@ -221,6 +221,7 @@ namespace Record_Searcher
             string selectedBook = this.BookBox.GetItemText(this.BookBox.SelectedItem);
             string selectedFirstName = FirstNameBox.Text;
             string selectedLastName = LastNameBox.Text;
+            string selectedDate = DateBox.Text;
             int selectedPage = 0;
             if (Flags.HasFlag(GivenInfo.PAGE))
             {
@@ -325,9 +326,11 @@ namespace Record_Searcher
                         AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
                         return search.FindPerson(selectedLastName + ", " + selectedFirstName);
                     }
-
-
-                    
+                case GivenInfo.TYPE | GivenInfo.DATE:
+                    {
+                        AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
+                        return await search.AsyncFindDate(GetValidDateRange(selectedDate));
+                    }
             }
             return null;
 

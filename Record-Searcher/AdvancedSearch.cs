@@ -48,7 +48,7 @@ namespace Record_Searcher
             RecordSearched = BookLookup[BookName].ToList();
             return RecordSearched;
         }
-
+        //this finds all the records on a specific page
         public List<Records> FindPage(List<Records> Books, int find_number)
         {
             List<Records> PagesinBooks = new List<Records>();
@@ -75,14 +75,59 @@ namespace Record_Searcher
             }
            
         }
+        //async method of finding pages.
         public async Task<List<Records>> AsyncFindPage(List<Records> Books, int find_number)
         {
            return await Task.Factory.StartNew(() => FindPage(Books, find_number));
 
 
         }
+        public Task<List<Records>> AsyncFindDate(int[] DateRange)
+        {
+            return Task.Factory.StartNew(() => FindDate(DateRange));
+        }
+        public Task<List<Records>> AsyncFindDate(int[] DateRange, List<Records> DateRecords)
+        {
+            return Task.Factory.StartNew(() => FindDate(DateRange, DateRecords));
+        }
+        //finds the records in a range of dates.
+        private List<Records> FindDate(int[] DateRange)
+        {
+             Utility util = new Utility();
+            foreach(Records rec in Record)
+            {
+                int[] RecordDateRange = util.GetValidDateRange(rec.Date, Program.normalRange);
+                int i = 0;
+                if(DateRange[i] >= (RecordDateRange[i] - Program.normalRange))
+                {
+                    i++;
+                    if(DateRange[i] <= (RecordDateRange[i] + Program.normalRange))
+                    {
+                        RecordSearched.Add(rec);
+                    }
+                }
 
+            }
+            return RecordSearched;
+        }
+        private List<Records> FindDate(int[] DateRange, List<Records> DateRecords)
+        {
+            Utility util = new Utility();
+            foreach (Records rec in DateRecords)
+            {
+                int[] RecordDateRange = util.GetValidDateRange(rec.Date, Program.normalRange);
+                int i = 0;
+                if (DateRange[i] >= RecordDateRange[i])
+                {
+                    i++;
+                    if (DateRange[i] <= RecordDateRange[i])
+                    {
+                        RecordSearched.Add(rec);
+                    }
+                }
 
-
+            }
+            return RecordSearched;
+        }
     }
 }

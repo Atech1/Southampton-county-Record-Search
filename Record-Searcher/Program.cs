@@ -10,6 +10,7 @@ namespace Record_Searcher
     static class Program
     {
         public static string DirectoryPath { get; set; }
+        public static int normalRange { get; set; }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -17,7 +18,7 @@ namespace Record_Searcher
         [STAThread]
         static int Main(string[] args)
         {
-
+            normalRange = 10;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
