@@ -15,7 +15,7 @@ namespace Record_Searcher
         List<Records> CurrentRecords;
         List<List<Records>> AllTypes;
         private Type type;
-        const int normalRange = 10;
+        int normalRange = 0;
         string[] types;
         [Flags]
         enum GivenInfo
@@ -46,6 +46,7 @@ namespace Record_Searcher
       
         public AdvancedForm()
         {
+            normalRange = Program.normalRange;
             InitializeComponent();
             CurrentRecords = new List<Records>();
             AllTypes = new List<List<Records>>(3);
@@ -178,42 +179,18 @@ namespace Record_Searcher
             }
         }
         //returns the min year and the max year for purposes of searching dates.
-        private int[] GetValidDateRange(string Date)
+       
+            public int[] GetValidDateRange(string Date)
         {
-            int[] DateRange = new int[2];
-            int i;
-            if (Date != null)
+            int[] Dates = new int[ (2*(Program.normalRange)) + 1];
+            int[] range = ValidateDateRange(Date, normalRange);
+            for(int i = 0; i < Dates.Count(); i++ )
             {
-                //see if a valid number is already in the box.
-                if (int.TryParse(Date, out i))
-                {
-                    DateRange[0] = i - normalRange;
-                    DateRange[1] = i + normalRange;
-                    return DateRange;
-                }
-                else
-                {
-                    var info = Date.Split('-').Select(x => x.Trim('[', ']')).ToArray();
-                    for (int j = 0; j < info.Count(); j++)
-                    {
-                        if (int.TryParse(info[j], out i))
-                        {
-                            DateRange[j] = i;
-
-                        }
-                        else
-                        {
-                            DateRange[j] = 0;
-                        }
-
-                    }
-                    return DateRange;
-
-                }
-
+                Dates[i] = range[0] + i;
             }
-            return DateRange;
+            return Dates;
         }
+        
         //checks which search will be called based on the flags raised with the other info passed in.
         private async Task<List<Records>> CheckFlags(GivenInfo flags = GivenInfo.NONE)
         {
@@ -328,8 +305,16 @@ namespace Record_Searcher
                     }
                 case GivenInfo.TYPE | GivenInfo.DATE:
                     {
+                        MessageBox.Show("Too many records to show!");
+                        break;
+                      //  AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
+                     //   return await search.AsyncFindDate(GetValidDateRange(selectedDate));
+                    }
+                case GivenInfo.TYPE | GivenInfo.BOOK | GivenInfo.DATE:
+                    {
                         AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
-                        return await search.AsyncFindDate(GetValidDateRange(selectedDate));
+                         return await search.AsyncFindDate(GetValidDateRange(selectedDate), search.FindABook(selectedBook));
+
                     }
             }
             return null;
@@ -505,6 +490,43 @@ namespace Record_Searcher
                     return;
                 }
             }
+
+        }
+        private int[] ValidateDateRange(string Date, int normalRange)
+        {
+            int[] DateRange = new int[2];
+            int i;
+            if (Date != null)
+            {
+                //see if a valid number is already in the box.
+                if (int.TryParse(Date, out i))
+                {
+                    DateRange[0] = i - normalRange;
+                    DateRange[1] = i + normalRange;
+                    return DateRange;
+                }
+                else
+                {
+                    var info = Date.Split('-').Select(x => x.Trim('[', ']')).ToArray();
+                    for (int j = 0; j < info.Count(); j++)
+                    {
+                        if (int.TryParse(info[j], out i))
+                        {
+                            DateRange[j] = i;
+
+                        }
+                        else
+                        {
+                            DateRange[j] = 0;
+                        }
+
+                    }
+                    return DateRange;
+
+                }
+
+            }
+            return DateRange;
 
         }
     }

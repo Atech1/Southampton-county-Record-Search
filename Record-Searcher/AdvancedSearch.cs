@@ -91,19 +91,19 @@ namespace Record_Searcher
             return Task.Factory.StartNew(() => FindDate(DateRange, DateRecords));
         }
         //finds the records in a range of dates.
+        //instead of doing a min value and a max value, I should instead do a whole range of values to intersect with rather than testing this.
         private List<Records> FindDate(int[] DateRange)
         {
              Utility util = new Utility();
             foreach(Records rec in Record)
             {
                 int[] RecordDateRange = util.GetValidDateRange(rec.Date, Program.normalRange);
-                int i = 0;
-                if(DateRange[i] >= (RecordDateRange[i] - Program.normalRange))
+                for (int i = 0; i < DateRange.Count(); i++)
                 {
-                    i++;
-                    if(DateRange[i] <= (RecordDateRange[i] + Program.normalRange))
+                    if (RecordDateRange.Contains(DateRange[i]))
                     {
                         RecordSearched.Add(rec);
+                        break;
                     }
                 }
 
@@ -116,13 +116,12 @@ namespace Record_Searcher
             foreach (Records rec in DateRecords)
             {
                 int[] RecordDateRange = util.GetValidDateRange(rec.Date, Program.normalRange);
-                int i = 0;
-                if (DateRange[i] >= RecordDateRange[i])
+                for (int i = 0; i < DateRange.Count(); i++)
                 {
-                    i++;
-                    if (DateRange[i] <= RecordDateRange[i])
+                    if (RecordDateRange.Contains(DateRange[i]))
                     {
                         RecordSearched.Add(rec);
+                        break;
                     }
                 }
 

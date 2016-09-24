@@ -232,6 +232,16 @@ namespace Record_Searcher
         }
         public int[] GetValidDateRange(string Date, int normalRange)
         {
+            int[] Dates = new int[(2 * (Program.normalRange)) + 1];
+            int[] range = ValidateDateRange(Date, normalRange);
+            for (int i = 0; i < Dates.Count(); i++)
+            {
+                Dates[i] = range[0] + i;
+            }
+            return Dates;
+        }
+       private int[]  ValidateDateRange(string Date, int normalRange)
+        {
             int[] DateRange = new int[2];
             int i;
             if (Date != null)
@@ -265,6 +275,7 @@ namespace Record_Searcher
 
             }
             return DateRange;
+
         }
 
     }

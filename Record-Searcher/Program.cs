@@ -18,7 +18,7 @@ namespace Record_Searcher
         [STAThread]
         static int Main(string[] args)
         {
-            normalRange = 10;
+            normalRange = 5;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
