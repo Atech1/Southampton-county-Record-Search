@@ -316,6 +316,11 @@ namespace Record_Searcher
                          return await search.AsyncFindDate(GetValidDateRange(selectedDate), search.FindABook(selectedBook));
 
                     }
+                case GivenInfo.DATE:
+                    {
+                        return null;
+                    }
+
             }
             return null;
 
