@@ -32,7 +32,7 @@ namespace Record_Searcher
 
         private void Regular_SearchClick(object sender, EventArgs e)
         {
-            if(!NewForm)
+            if(NewForm)
             {
                 ThisForm.Hide();
                 OldStyleBasicForm form = new OldStyleBasicForm();

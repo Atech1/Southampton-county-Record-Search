@@ -19,7 +19,7 @@ namespace Record_Searcher
         {
             
             InitializeComponent();
-            //   Set_ListView();
+               Set_ListView();
 
             SearchBox.Focus();
 

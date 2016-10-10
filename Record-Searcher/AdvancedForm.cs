@@ -51,7 +51,10 @@ namespace Record_Searcher
             CurrentRecords = new List<Records>();
             AllTypes = new List<List<Records>>(3);
             Set_ListView();
+            DateBox.Enabled = false;
         }
+        //Has all of the UI updates and initialization in it
+        #region UI
         //loads all the records
         private async Task LoadForm()
         {
@@ -89,6 +92,7 @@ namespace Record_Searcher
         {
             await LoadForm();
         }
+        
         //reloads records
         private async void Reload(object sender, EventArgs e)
         {
@@ -106,6 +110,7 @@ namespace Record_Searcher
         //runs when type is selected to give the correct number of books to the other box.
         private void TypeSelected(object sender, EventArgs e)
         {
+            NameFlags();
             string selected = this.TypeBox.GetItemText(this.TypeBox.SelectedItem);
             if (selected == "All")
             {
@@ -117,7 +122,8 @@ namespace Record_Searcher
                 {
                     Flags -= GivenInfo.BOOK;
                 }
-                BookBox.DataSource = null;          
+                BookBox.DataSource = null;
+                DateBox.Enabled = false;
                 return;
             }
             else if (Type.CorrectType(selected))
@@ -125,12 +131,14 @@ namespace Record_Searcher
                 Utility util = new Utility();
                 BookBox.DataSource = util.DictionaryKeys(new Type(selected));
                 Flags |= GivenInfo.TYPE;
+                DateBox.Enabled = true;
 
             }
         }
         //gives the correct date to the date box
         private void BookSelected(object sender, EventArgs e)
         {
+            NameFlags();
             if (this.BookBox.SelectedItem != null && !(this.BookBox.GetItemText(this.BookBox.SelectedItem) == "None"))
             {
                 Utility util = new Utility();
@@ -155,6 +163,7 @@ namespace Record_Searcher
         //checks to see if the date is right when the date is typed rather than passed
         private void ValidateDate(object sender, EventArgs e)
         {
+            NameFlags();
             int date;
             if (int.TryParse(DateBox.Text, out date))
             {
@@ -179,8 +188,10 @@ namespace Record_Searcher
             }
         }
         //returns the min year and the max year for purposes of searching dates.
-       
-            public int[] GetValidDateRange(string Date)
+        #endregion UI
+        //has all of the helpers for searching in the advanced search class
+        #region SearchHelpers
+        public int[] GetValidDateRange(string Date)
         {
             int[] Dates = new int[ (2*(Program.normalRange)) + 1];
             int[] range = ValidateDateRange(Date, normalRange);
@@ -190,6 +201,76 @@ namespace Record_Searcher
             }
             return Dates;
         }
+            private int[] ValidateDateRange(string Date, int normalRange)
+            {
+                int[] DateRange = new int[2];
+                int i;
+                if (Date != null)
+                {
+                    //see if a valid number is already in the box.
+                    if (int.TryParse(Date, out i))
+                    {
+                        DateRange[0] = i - normalRange;
+                        DateRange[1] = i + normalRange;
+                        return DateRange;
+                    }
+                    else
+                    {
+                        var info = Date.Split('-').Select(x => x.Trim('[', ']')).ToArray();
+                        for (int j = 0; j < info.Count(); j++)
+                        {
+                            if (int.TryParse(info[j], out i))
+                            {
+                                DateRange[j] = i;
+
+                            }
+                            else
+                            {
+                                DateRange[j] = 0;
+                            }
+
+                        }
+                        return DateRange;
+
+                    }
+
+                }
+                return DateRange;
+
+            }
+            private void UpdateFlags()
+            {
+                TestBox.Text = Flags.ToString();
+            }
+            private void NameFlags()
+            {
+                if (FirstNameBox.Text.Trim() != null && !string.IsNullOrWhiteSpace(FirstNameBox.Text))
+                {
+                    Flags |= GivenInfo.FIRSTNAME;
+                }
+                else
+                {
+                    if (Flags.HasFlag(GivenInfo.FIRSTNAME))
+                    {
+                        Flags -= GivenInfo.FIRSTNAME;
+                        return;
+                    }
+
+                }
+                if (LastNameBox.Text.Trim() != null && !string.IsNullOrWhiteSpace(LastNameBox.Text))
+                {
+                    Flags |= GivenInfo.LASTNAME;
+                }
+                else
+                {
+                    if (Flags.HasFlag(GivenInfo.LASTNAME))
+                    {
+                        Flags -= GivenInfo.LASTNAME;
+                        return;
+                    }
+                }
+
+            }
         
         //checks which search will be called based on the flags raised with the other info passed in.
         private async Task<List<Records>> CheckFlags(GivenInfo flags = GivenInfo.NONE)
@@ -388,8 +469,9 @@ namespace Record_Searcher
 
 
         }
-
+        #endregion SearchHelpers
         //sets the list display foreach record.
+        #region Displaying
         private void Set_Display(Records rec, string CorrectPages)
         {
             var ToBeDisplayed = new ListViewItem(new[]
@@ -424,9 +506,9 @@ namespace Record_Searcher
         {
             if(ListView1.Items.Count != 0)
             {
-                ClearListView();
+               ClearListView();
             }
-            NameFlags();
+                 NameFlags();
             Utility util = new Utility();
             List<Records> Result = await CheckFlags(Flags);
             if (Result != null)
@@ -459,81 +541,9 @@ namespace Record_Searcher
         }
         private  void  ClearListView()
         {
-            for(int i = ListView1.Items.Count - 1; 0 <= i; i--)
-            {
-                ListView1.Items[i].Remove();
-            }
+            ListView1.Items.Clear();
         }
-        private void UpdateFlags()
-        {
-            TestBox.Text = Flags.ToString();
-        }
-        private void NameFlags()
-        {
-            if(FirstNameBox.Text.Trim() != null && !string.IsNullOrWhiteSpace(FirstNameBox.Text))
-            {
-                Flags |= GivenInfo.FIRSTNAME;
-            }
-            else
-            {
-                if(Flags.HasFlag(GivenInfo.FIRSTNAME))
-                {
-                    Flags -= GivenInfo.FIRSTNAME;
-                    return;
-                }
-
-            }
-            if (LastNameBox.Text.Trim() != null && !string.IsNullOrWhiteSpace(LastNameBox.Text))
-            {
-                Flags |= GivenInfo.LASTNAME;
-            }
-            else
-            {
-                if (Flags.HasFlag(GivenInfo.LASTNAME))
-                {
-                    Flags -= GivenInfo.LASTNAME;
-                    return;
-                }
-            }
-
-        }
-        private int[] ValidateDateRange(string Date, int normalRange)
-        {
-            int[] DateRange = new int[2];
-            int i;
-            if (Date != null)
-            {
-                //see if a valid number is already in the box.
-                if (int.TryParse(Date, out i))
-                {
-                    DateRange[0] = i - normalRange;
-                    DateRange[1] = i + normalRange;
-                    return DateRange;
-                }
-                else
-                {
-                    var info = Date.Split('-').Select(x => x.Trim('[', ']')).ToArray();
-                    for (int j = 0; j < info.Count(); j++)
-                    {
-                        if (int.TryParse(info[j], out i))
-                        {
-                            DateRange[j] = i;
-
-                        }
-                        else
-                        {
-                            DateRange[j] = 0;
-                        }
-
-                    }
-                    return DateRange;
-
-                }
-
-            }
-            return DateRange;
-
-        }
+        #endregion Displaying
     }
 }
 
