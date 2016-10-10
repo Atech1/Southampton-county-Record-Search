@@ -18,6 +18,7 @@ namespace Record_Searcher
         //dictionary setup for the date dictionaries.
        static Dictionary<int, string> WillDates;
        static Dictionary<int, string> DeedDates;
+       static Dictionary<int, string> MarriageDates;
         public Utility()
         {
         
@@ -36,6 +37,10 @@ namespace Record_Searcher
             else if(type.GetName() == "Will")
             {
                 return WillDates;
+            }
+            else if(type.GetName() == "Marriage")
+            {
+                return MarriageDates;
             }
             return null;
 
@@ -115,8 +120,9 @@ namespace Record_Searcher
             BasePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             DeedDates = new Dictionary<int, string>();
             WillDates = new Dictionary<int, string>();
-
+            MarriageDates = new Dictionary<int, string>();
             #region Dictionary Declarations
+            //deeds
             DeedDates.Add(0, "None");
             DeedDates.Add(1, "[1749 - 1753]");
             DeedDates.Add(2, "[1753 - 1760]");
@@ -153,6 +159,7 @@ namespace Record_Searcher
             DeedDates.Add(33, "[1877 - 1879]");
             DeedDates.Add(34, "[1879 - 1880]");
             DeedDates.Add(35, "[1880 - 1881]");
+            //wills
             WillDates.Add(0, "None");
             WillDates.Add(1, "[1747 - 1762]");
             WillDates.Add(2, "[1762 - 1772]");
@@ -174,6 +181,16 @@ namespace Record_Searcher
             WillDates.Add(18, "[1867 - 1867]");
             WillDates.Add(19, "[1867 - 1874]");
             WillDates.Add(20, "[1874 - 1881]");
+            //marriages
+            MarriageDates.Add(0, "None");
+            MarriageDates.Add(1, "[1750 - 1853]");
+            MarriageDates.Add(2, "[1850 - 1861]");
+            MarriageDates.Add(3, "[1861 - 1872]");
+            MarriageDates.Add(4, "[1872 - 1876]");
+            MarriageDates.Add(5, "[1876 - 1879]");
+            MarriageDates.Add(6, "[1879 - 1882]");
+            MarriageDates.Add(7, "[1882 - 1886]");
+            MarriageDates.Add(8, "[1886 - 1890]");
             #endregion Dictionary Declarations
         }
         public static string GetTitle()
@@ -219,6 +236,22 @@ namespace Record_Searcher
                         }
                        
 
+                    }
+                    return BookNames;
+                }
+                if (Validtype.GetName() == "Marriage")
+                {
+                    BookNames = new string[MarriageDates.Count];
+                    for (int i = 0; i < MarriageDates.Count; i++)
+                    {
+                        if (i != 0)
+                        {
+                            BookNames[i] = "Book " + (i);
+                        }
+                        else
+                        {
+                            BookNames[0] = MarriageDates[0];
+                        }
                     }
                     return BookNames;
                 }

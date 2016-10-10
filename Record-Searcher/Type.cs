@@ -15,7 +15,9 @@ namespace Record_Searcher
         {
           //  none,
             Deed,
-            Will
+            Marriage,
+            Will,
+            
           //  Minute
         }
         private string type;

@@ -40,7 +40,7 @@ namespace Record_Searcher
           set
           {
               this._Flags = value;
-              UpdateFlags();
+            
 
           }
       }
@@ -60,13 +60,14 @@ namespace Record_Searcher
         //loads all the records
         private async Task LoadForm()
         {
+            types = Type.NumberOfValidTypes();
             TagBox.DataSource = Enum.GetValues(typeof(Tag));
             Btn1.Enabled = false;
             progressBar1.Show();
             ListView1.Enabled = false;
             type = new Type("Deed");
             Utility util = new Utility();
-            types = Type.NumberOfValidTypes();
+           
             progressBar1.Value = 4;
             Cursor.Current = Cursors.WaitCursor;
             this.UseWaitCursor = true;
@@ -253,10 +254,7 @@ namespace Record_Searcher
                 return DateRange;
 
             }
-            private void UpdateFlags()
-            {
-                TestBox.Text = Flags.ToString();
-            }
+            
             private void NameFlags()
             {
                 if (FirstNameBox.Text.Trim() != null && !string.IsNullOrWhiteSpace(FirstNameBox.Text))
