@@ -39,7 +39,7 @@ namespace Record_Searcher
                     }
                 }
             }
-            Application.Run(new Form2(MetroAllowed()));
+            Application.Run(new AdvancedForm());
            // Application.Run(new Form2(MetroAllowed()));
             return 0;
         }

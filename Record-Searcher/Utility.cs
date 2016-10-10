@@ -77,7 +77,7 @@ namespace Record_Searcher
             //this will put together a final string to show all the info in the record, for the UI element.
             string display;
             //adds all the info into the display to be displayed.
-            display = (rec.Date + "   " + rec.Tag + rec.Title + "  " + rec.LastName+", "+ rec.FirstName + PagesToDisplay(rec.Pages) + "\n");
+            display = (rec.Date + "   " + rec.tag + rec.Title + "  " + rec.LastName+", "+ rec.FirstName + PagesToDisplay(rec.Pages) + "\n");
           //  num_pages = null;
             return display;
         }

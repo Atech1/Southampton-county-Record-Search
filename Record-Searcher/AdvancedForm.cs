@@ -26,9 +26,11 @@ namespace Record_Searcher
             FIRSTNAME = 1 << 2,
             LASTNAME = 1 << 3,
             DATE = 1 << 4,
-            PAGE = 1 << 5
+            PAGE = 1 << 5,
+            TAG = 1 << 6
         }
       private  GivenInfo _Flags;
+      Tag tag;
         GivenInfo Flags
       {
           get
@@ -58,6 +60,7 @@ namespace Record_Searcher
         //loads all the records
         private async Task LoadForm()
         {
+            TagBox.DataSource = Enum.GetValues(typeof(Tag));
             Btn1.Enabled = false;
             progressBar1.Show();
             ListView1.Enabled = false;
@@ -187,7 +190,19 @@ namespace Record_Searcher
                 return;
             }
         }
-        //returns the min year and the max year for purposes of searching dates.
+        private void TagSelected(object sender, EventArgs e)
+        {
+            Enum.TryParse<Tag>(TagBox.SelectedValue.ToString(), out tag);
+            if (tag.ToString() == "None") 
+            {
+                Flags -= GivenInfo.TAG;
+                return;
+            }
+            else
+            {
+                Flags |= GivenInfo.TAG;
+            }
+        }
         #endregion UI
         //has all of the helpers for searching in the advanced search class
         #region SearchHelpers
@@ -273,6 +288,7 @@ namespace Record_Searcher
             }
         
         //checks which search will be called based on the flags raised with the other info passed in.
+
         private async Task<List<Records>> CheckFlags(GivenInfo flags = GivenInfo.NONE)
         {
             string selectedType = this.TypeBox.GetItemText(this.TypeBox.SelectedItem);
@@ -285,6 +301,8 @@ namespace Record_Searcher
             {
                 selectedPage = int.Parse(PageBox.Text);
             }
+            //goes through all of the possible flag combonations
+            #region FlagChecks
             switch (flags)
             {
                 case GivenInfo.NONE:
@@ -296,6 +314,7 @@ namespace Record_Searcher
                     {
                         return FindListOfType(selectedType);
                     }
+                #region BOOK
                 case GivenInfo.TYPE | GivenInfo.BOOK:
                     {
                         AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
@@ -308,6 +327,9 @@ namespace Record_Searcher
                          List<Records> FoundPages = await search.AsyncFindPage(search.FindABook(selectedBook), selectedPage);
                          return FoundPages;
                     }
+
+                #endregion Book
+                #region Name
                 case GivenInfo.TYPE | GivenInfo.LASTNAME:
                 case GivenInfo.TYPE | GivenInfo.FIRSTNAME:
                     {
@@ -374,8 +396,8 @@ namespace Record_Searcher
                         foreach (List<Records> rec in AllTypes)
                         {
                             AdvancedSearch search = new AdvancedSearch(rec);
-                            List<Records> FoundNames = search.FindPerson(selectedLastName + ", " + selectedFirstName);
-                            searchingNames.Union(FoundNames);
+                            List<Records> FoundNames = search.FindPerson(selectedFirstName, selectedLastName);
+                            searchingNames.AddRange(FoundNames);
                         }
                         return searchingNames;
                     }
@@ -384,6 +406,8 @@ namespace Record_Searcher
                         AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
                         return search.FindPerson(selectedLastName + ", " + selectedFirstName);
                     }
+                #endregion Name
+                #region Date
                 case GivenInfo.TYPE | GivenInfo.DATE:
                     {
                         MessageBox.Show("Too many records to show!");
@@ -401,11 +425,35 @@ namespace Record_Searcher
                     {
                         return null;
                     }
-
+                #endregion Date
+                #region Tag
+                case GivenInfo.TAG:
+                    {
+                          List<Records> searchingNames = new List<Records>();
+                        foreach(List<Records> rec in AllTypes)
+                        {
+                            AdvancedSearch search = new AdvancedSearch(rec);
+                            searchingNames.AddRange(search.FindTag(tag));
+                        }
+                        return searchingNames;
+                    }
+                case GivenInfo.TAG | GivenInfo.TYPE:
+                    {
+                        AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
+                        return search.FindTag(tag);
+                    }
+                case GivenInfo.TYPE | GivenInfo.BOOK|GivenInfo.TAG:
+                    {
+                        AdvancedSearch search = new AdvancedSearch(FindListOfType(selectedType));
+                        return search.FindTag(tag, search.FindABook(selectedBook));
+                    }
+                #endregion Tag
+            #endregion FlagChecks
             }
             return null;
 
         }
+
         //checks to see if the page number is within the right range  1 < x < AdvancedSearch.MaxPage();
         private void CheckPageNumber(object sender, EventArgs e)
         {
@@ -479,7 +527,7 @@ namespace Record_Searcher
                 rec.type.GetName(),
                 rec.Date,
                 rec.Title,
-                rec.Tag,
+                rec.tag.ToString(),
                 rec.person,
                 CorrectPages
                
@@ -544,6 +592,8 @@ namespace Record_Searcher
             ListView1.Items.Clear();
         }
         #endregion Displaying
+
+      
     }
 }
 

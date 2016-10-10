@@ -18,7 +18,7 @@ namespace Record_Searcher
      public string LastName { get; set; }
      public List<int> Pages { get; set; }
      public string person { get; set; }
-     public string Tag { get; set; }
+     public Tag tag  { get; set; }
      public int BookNumber { get; set; }
      public string Date { get; set; }
      private Type _type;

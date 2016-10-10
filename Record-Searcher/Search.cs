@@ -27,7 +27,7 @@ namespace Record_Searcher
             RecordSearched = new List<Records>(5);
 
         }
-        public List<Records> FindPerson()
+        public virtual List<Records> FindPerson(string FirstName, string LastName)
         {
             var PersonLookup = Record.ToLookup(x => x.person);
             RecordSearched =  PersonLookup[SearchFor].ToList();
@@ -93,6 +93,11 @@ namespace Record_Searcher
 
 
         }
-
+        public List<Records> FindPerson()
+        {
+            var PersonLookup = Record.ToLookup(x => x.person);
+            RecordSearched = PersonLookup[SearchFor].ToList();
+            return RecordSearched;
+        }
     }
 }

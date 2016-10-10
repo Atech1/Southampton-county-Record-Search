@@ -45,6 +45,8 @@
             this.PageBox = new MetroFramework.Controls.MetroTextBox();
             this.ListView1 = new System.Windows.Forms.ListView();
             this.TestBox = new MetroFramework.Controls.MetroTextBox();
+            this.TagBox = new MetroFramework.Controls.MetroComboBox();
+            this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -293,6 +295,10 @@
             // 
             // ListView1
             // 
+            this.ListView1.AllowColumnReorder = true;
+            this.ListView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ListView1.Location = new System.Drawing.Point(23, 128);
             this.ListView1.Name = "ListView1";
             this.ListView1.Size = new System.Drawing.Size(808, 339);
@@ -329,11 +335,35 @@
             this.TestBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.TestBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             // 
+            // TagBox
+            // 
+            this.TagBox.FormattingEnabled = true;
+            this.TagBox.ItemHeight = 23;
+            this.TagBox.Location = new System.Drawing.Point(222, 95);
+            this.TagBox.Name = "TagBox";
+            this.TagBox.Size = new System.Drawing.Size(112, 29);
+            this.TagBox.TabIndex = 18;
+            this.TagBox.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TagBox.UseSelectable = true;
+            this.TagBox.SelectionChangeCommitted += new System.EventHandler(this.TagSelected);
+            // 
+            // metroLabel7
+            // 
+            this.metroLabel7.AutoSize = true;
+            this.metroLabel7.Location = new System.Drawing.Point(174, 99);
+            this.metroLabel7.Name = "metroLabel7";
+            this.metroLabel7.Size = new System.Drawing.Size(32, 19);
+            this.metroLabel7.TabIndex = 19;
+            this.metroLabel7.Text = "Tag:";
+            this.metroLabel7.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
             // AdvancedForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 555);
+            this.Controls.Add(this.metroLabel7);
+            this.Controls.Add(this.TagBox);
             this.Controls.Add(this.TestBox);
             this.Controls.Add(this.ListView1);
             this.Controls.Add(this.PageBox);
@@ -379,5 +409,7 @@
         private MetroFramework.Controls.MetroTextBox PageBox;
         private System.Windows.Forms.ListView ListView1;
         private MetroFramework.Controls.MetroTextBox TestBox;
+        private MetroFramework.Controls.MetroComboBox TagBox;
+        private MetroFramework.Controls.MetroLabel metroLabel7;
     }
 }

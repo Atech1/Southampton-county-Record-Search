@@ -49,11 +49,11 @@ namespace Record_Searcher
                         record.BookNumber = IsParsed(info[0].Trim('B', 'o', 'k'));
                         //TODO Should make 2 declarations to make a first and last name in each record. from info[1] and info[2] respectfully. As well as keeping
                         // both together in case you just want to search for both.
-                        record.FirstName = info[2];
+                        record.FirstName = info[2].Trim('+', '*', '^');
                         record.LastName = info[1].Trim('+', '*', '^');
                         record.person = info[1] + ", " + info[2];
                         //creates a tag from the name, if the name has one of the tag characters "^, *, +"
-                        record.Tag = CreateSpecialTag(info[1]);
+                        record.tag = CreateSpecialTag(info[1]);
                         //makes a list of the pages that are associated with the record of the person
                         record.Pages = info.Skip(3).Select(x => IsParsed(x)).ToList();
                         //gets the book type
@@ -185,23 +185,23 @@ namespace Record_Searcher
                 return 0;
             }
         }
-        private string CreateSpecialTag(string last_name)
+        private Tag CreateSpecialTag(string last_name)
         {
             //creates tages of all the special characters to represent the various group tags below.
             if (last_name.Contains('+'))
             {
-                return "[African] ";
+                return Tag.African;
             }
             else if (last_name.Contains('*'))
             {
-                return "[Location] ";
+                return Tag.Location;
             }
             else if (last_name.Contains('^'))
             {
-                return "[Indian] ";
+                return Tag.Indian;
             }
 
-            return " ";
+            return Tag.None;
         }
 
     }

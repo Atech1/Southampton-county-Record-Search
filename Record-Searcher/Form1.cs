@@ -91,7 +91,7 @@ namespace Record_Searcher
                 rec.type.GetName(),
                 rec.Date,
                 rec.Title,
-                rec.Tag,
+                rec.tag.ToString(),
                 rec.person,
                 CorrectPages
                

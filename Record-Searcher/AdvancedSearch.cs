@@ -128,5 +128,25 @@ namespace Record_Searcher
             }
             return RecordSearched;
         }
+        public override List<Records> FindPerson(string FirstName, string LastName)
+        {
+            var LastLookup = Record.ToLookup(x => x.LastName);
+            var FirstLookup = Record.ToLookup(x => x.FirstName);
+            List<Records> result = LastLookup[LastName].Intersect(FirstLookup[FirstName]).ToList();
+            return result;
+            
+
+
+        }
+        public List<Records> FindTag(Tag tagName)
+        {
+            var TagLookup = Record.ToLookup(x => x.tag);
+            return TagLookup[tagName].ToList();
+        }
+        public List<Records> FindTag(Tag tagName, List<Records> recs)
+        {
+            var TagLookup = recs.ToLookup(x => x.tag);
+            return TagLookup[tagName].ToList();
+        }
     }
 }
