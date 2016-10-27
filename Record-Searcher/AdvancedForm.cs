@@ -373,17 +373,26 @@ namespace Record_Searcher
                 case  GivenInfo.LASTNAME:
                 case  GivenInfo.FIRSTNAME:
                     {
+                        string question;
                         bool Last_Name = false;
                         if (Flags.HasFlag(GivenInfo.LASTNAME))
                         {
                             Last_Name = true;
                         }
                         List<Records> searchingNames = new List<Records>();
+                        if(Last_Name)
+                        {
+                            question = selectedLastName;
+                        }
+                        else
+                        {
+                            question = selectedFirstName;
+                        }
                         foreach (List<Records> rec in AllTypes)
                         {
                             AdvancedSearch search = new AdvancedSearch(rec);
-                            List<Records> FoundNames = search.FindName(Last_Name);
-                            searchingNames.Union(FoundNames);
+                            List<Records> FoundNames = search.FindName(Last_Name, question);
+                            searchingNames.AddRange(FoundNames);
                         }
                         return searchingNames;
                     }

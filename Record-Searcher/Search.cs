@@ -33,7 +33,7 @@ namespace Record_Searcher
             RecordSearched =  PersonLookup[SearchFor].ToList();
             return RecordSearched;
         }
-        public List<Records> FindName( bool LastName )
+        public List<Records> FindName( bool LastName)
         {
             
             if(LastName)
