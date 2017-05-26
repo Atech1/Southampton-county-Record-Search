@@ -91,6 +91,7 @@
     <Compile Include="Reader.cs" />
     <Compile Include="Records.cs" />
     <Compile Include="Search.cs" />
+    <Compile Include="SearchRequest.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="Type.cs" />
     <Compile Include="Utility.cs" />

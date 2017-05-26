@@ -19,3 +19,5 @@
 
 -would i want to organize the info better by having a list of books in the records... books made of title, type, and book number (?)
 -in that way i should have a person too, made of first and last name and tag (?)
+
+- need to add a actual search structure with .JSON filings.

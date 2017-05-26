@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Record_Searcher
 {
+    //complete rewrite needed
     class AdvancedSearch : Search
     {
         private List<Records> RecordSearched;
